@@ -23,7 +23,12 @@ export class UsersService {
   }
 
   async findBy(args: UserArgs): Promise<User[]> {
-    return await this.userRepository.find({where: {token_and_name: args.token_and_name}});
+    let whereParams = {}
+    if(args.telegram_id != null)
+      whereParams['telegram_id'] = args.telegram_id;
+    if(args.token != null)
+      whereParams['token'] = args.token;
+    return await this.userRepository.find({where: whereParams});
   }
 
 

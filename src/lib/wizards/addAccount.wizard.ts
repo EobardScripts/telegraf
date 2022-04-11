@@ -4,12 +4,12 @@ import { MyContext } from "../context/context";
 import { WizardsName } from "../enums/enum";
 
 async function addAccountInBase(ctx: MyContext): Promise<number> {
-    const token_and_name = ctx.wizard.state['token'] + ';' + ctx.wizard.state['display_name'];
     const telegram_id = ctx.from.id.toString();
 
     let user = new User();
     user.telegram_id = telegram_id;
-    user.token_and_name = token_and_name;
+    user.token = ctx.wizard.state['token'];
+    user.token_name = ctx.wizard.state['token_name'];
 
     try {
         await ctx.services.create(user);
@@ -34,9 +34,9 @@ export const addAccount = new Scenes.WizardScene<MyContext>(WizardsName.addAccou
     },
     async (ctx) => {
         if ('text' in ctx.message) {
-            ctx.wizard.state['display_name'] = ctx.message.text;
+            ctx.wizard.state['token_name'] = ctx.message.text;
             const rx = /^[а-яё\s-]+$/i;
-            if(rx.test(ctx.wizard.state['display_name'])){
+            if(rx.test(ctx.wizard.state['token_name'])){
                 ctx.reply('Некорректное название аккаунта, используйте английский алфавит.');
                 return;
             }
@@ -45,7 +45,7 @@ export const addAccount = new Scenes.WizardScene<MyContext>(WizardsName.addAccou
                 await ctx.reply(`Такой аккаунт уже существуют.`);
                 ctx.scene.reenter();
             }else{
-                ctx.replyWithHTML(`Аккаунт добавлен.\r\n\r\nНазвание аккаунта: <b>${ctx.wizard.state['display_name']}</b>\r\nТокен: <b>${ctx.wizard.state['token']}</b>`);
+                ctx.replyWithHTML(`Аккаунт добавлен.\r\n\r\nНазвание аккаунта: <b>${ctx.wizard.state['token_name']}</b>\r\nТокен: <b>${ctx.wizard.state['token']}</b>`);
                 ctx.scene.leave();
             }
         }

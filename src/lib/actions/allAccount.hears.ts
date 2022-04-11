@@ -1,3 +1,4 @@
+import { UserArgs } from "src/users/args/user.args";
 import { Markup } from "telegraf";
 import { MyContext } from "../context/context";
 import { ActionsName } from "../enums/enum";
@@ -5,7 +6,9 @@ import { ActionsName } from "../enums/enum";
 
 export const allAccountAction = async (ctx: MyContext) => {
     console.log("allAccountActions");
-    const accounts = await ctx.services.findAll();
+    let args: UserArgs = new UserArgs();
+    args.telegram_id = ctx.from.id.toString();
+    const accounts = await ctx.services.findBy(args);
     console.log(accounts);
     if(accounts.length == 0) {
         ctx.reply('Список аккаунтов пуст');
@@ -15,11 +18,11 @@ export const allAccountAction = async (ctx: MyContext) => {
     let list = [];
 
     accounts.forEach(account => {
-        const token = (account.token_and_name.split(';'))[0];
-        const display_name = (account.token_and_name.split(';'))[1];
+        const token = account.token;
+        const token_name = account.token_name;
         list.push({
-            text: display_name,
-            callback_data: ActionsName.func + account.token_and_name
+            text: token_name,
+            callback_data: ActionsName.func + token
         });
     });
 

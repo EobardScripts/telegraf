@@ -9,12 +9,13 @@ export const actionForOneAccount = async (ctx: MyContext) => {
             console.log(ctx.update.callback_query);
             const callback_data = ctx.update.callback_query.data.replace(ActionsName.funcForOne, "");
             const list = callback_data.split(';');
-            const token = list[0], display_name = list[1], action = list[2];
+            const token = list[0], action = list[1];
 
             switch(action){
                 case 'delete':
                     let args: UserArgs = new UserArgs();
-                    args.token_and_name = token + ";" + display_name;
+                    args.token = token;
+                    args.telegram_id = ctx.from.id.toString();
                     const user = (await ctx.services.findBy(args))[0];
                     if(!user) return;
                     await ctx.services.remove(user.id);

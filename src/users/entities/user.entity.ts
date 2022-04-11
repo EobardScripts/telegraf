@@ -1,9 +1,10 @@
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { plainToClass } from 'class-transformer';
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 
 @ObjectType()
 @Entity('users')
+@Unique(["telegram_id", "token_name", "token"])
 export class User {
   @Field(() => ID!)
   @PrimaryGeneratedColumn()
@@ -14,8 +15,12 @@ export class User {
   telegram_id: string;
 
   @Field()
-  @Column({ unique: true })
-  token_and_name: string;
+  @Column()
+  token_name: string;
+
+  @Field()
+  @Column()
+  token: string;
 
   @Field(() => Date)
   @CreateDateColumn()
