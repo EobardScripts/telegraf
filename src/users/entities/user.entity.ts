@@ -5,6 +5,7 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, Updat
 @ObjectType()
 @Entity('users')
 @Unique(["telegram_id", "token_name", "token"])
+@Unique(["telegram_id", "token"])
 export class User {
   @Field(() => ID!)
   @PrimaryGeneratedColumn()
