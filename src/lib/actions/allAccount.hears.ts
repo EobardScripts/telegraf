@@ -7,6 +7,10 @@ export const allAccountAction = async (ctx: MyContext) => {
     console.log("allAccountActions");
     const accounts = await ctx.services.findAll();
     console.log(accounts);
+    if(accounts.length == 0) {
+        ctx.reply('Список аккаунтов пуст');
+        return;
+    }
 
     let list = [];
 
