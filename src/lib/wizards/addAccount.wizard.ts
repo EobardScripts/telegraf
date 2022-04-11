@@ -35,6 +35,11 @@ export const addAccount = new Scenes.WizardScene<MyContext>(WizardsName.addAccou
     async (ctx) => {
         if ('text' in ctx.message) {
             ctx.wizard.state['display_name'] = ctx.message.text;
+            const rx = /^[а-яё\s-]+$/i;
+            if(rx.test(ctx.wizard.state['display_name'])){
+                ctx.reply('Некорректное название аккаунта, используйте английский алфавит.');
+                return;
+            }
             const addAcc = await addAccountInBase(ctx);
             if(addAcc === 1062 || addAcc !== 0) {
                 await ctx.reply(`Такой аккаунт уже существуют.`);
