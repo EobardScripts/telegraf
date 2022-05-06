@@ -20,7 +20,7 @@ const start = (ctx: Context) => {
 export class AppService {
     constructor(private readonly usersService: UsersService) { }
 
-    private setUsage(bot: Telegraf<MyContext>){
+    private setUsage(bot: Telegraf<MyContext>) {
         const stage = new Scenes.Stage([addAccount]);
 
         bot.use((ctx: MyContext, next: NextFn) => {

@@ -34,6 +34,7 @@
     "graphql": "^16.3.0",
     "mysql2": "^2.3.3",
     "nestjs-joi": "^1.7.0",
+    "node-fetch": "^3.2.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
